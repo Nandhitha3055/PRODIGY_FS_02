@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>User Profile</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='user.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+  <ul>
+    <br><br><br><br><br><br><br><br><br><br>
+    <li><a href="/home"><button class="admin_btn" >Home</button></a></li>
+    <li><a href="/user_admin_profile"><button class="admin_btn">Profile</button></a></li>
+    <li><a href="/create_admin"><button class="admin_btn">Create Admin/User</button></a></li>
+    <li><a href="/current_users"><button  class="admin_btn">View Employee Details</button></a></li>
+    <li><a href="/delete"><button class="admin_btn">Delete Account</button></a></li>
+    <li><a href="/logout"><button class="admin_btn">Logout</button></a></li>
+  </ul>
+
+  <!-- <div style="margin-left:25%;padding:1px 16px;display: grid;
+    place-items: center;">
+    <div class="wrapper">
+      <h1>Hi {{first}} &#33;</h1>
+      </div> 
+  </div> -->
+  {% if name == "profile" %}
+  <div class= "container" ">
+    <div class="wrapper">
+      <div class="title">Your Profile</div>
+
+    <form>
+      <h3>User Type : {{user_type}}</h3>
+      <h3>First Name: {{first}}</h3>
+      <h3>Last Name : {{last}}</h3>
+      <h3>Phone : {{phone}}</h3>
+      <h3>Blood Group : {{blood}}</h3>
+      <h3>Date Of Joining : {{Doj}}</h3>
+      <h3>Years Of Experience : {{Yoe}}</h3>
+      <h3>Designation : {{designation}}</h3>
+      <h3>Salary : {{sal}}</h3>
+      <h3>Email : {{email}}</h3>
+    </form>
+      </div>
+      </div>
+  {% elif name == "home" %}
+  <div class= "container" ">
+    <div class="wrapper">
+      <div class="title">Welcome Back !</div>
+      </div>
+      </div>
+
+  {% elif name == "create_admin" %}
+  <div class= "container">
+    <div class="wrapper1">
+      <div class="title">Create Account</div>
+    <form action="/verify" method="POST">      
+     <h3 class="invalid" style="color:red;  text-align: center; margin-top: 3%;"></h3>
+    <div class="flex">
+     <div>
+      <div class="field">
+          <input class="FirstName" type="text" name="FirstName" required>
+          <label>First Name</label>
+        </div>
+      <div class="field">
+          <input class="LastName" type="text" name="LastName" required>
+          <label>Last Name</label>
+        </div>
+    <div class="field">
+        <input class="Phone" type="text" name="PhoneNumber" required>
+        <label>Phone Number</label>
+      </div>
+    <div class="field">
+      <!-- <h5 style="font-weight:light;text-align:left;">Date Of Joining</h5> -->
+      <input class="dateOfJoin" placeholder="Date Of Joining" type="text"
+        onfocus="(this.type='date')" style="color:black;" name="DateOfJoin" required>
+    </div> 
+    <div class="field">
+    <input class="experience" type="number" name="experience" min="0" max="100" required>
+    <label>Years of Experience</label>
+    </div>
+    <div class="field">
+    <select id="designation" name="designation" placeholder = "designation">
+        <option value="" disabled selected hidden>Designation</option>
+        <option value = "hr">HR</option>
+        <option value="intern">Intern</option>
+        <option value="juniorDeveloper">Junior Developer</option>
+        <option value="seniorDeveloper">Senior Developer</option>
+        <option value="teamLead">Team Lead</option>
+        <option value="manager">Manager</option>
+        <option value="director">Director</option>
+        <option value="cto">CTO</option>
+        <option value="ceo">CEO</option>
+    </select>
+    <!-- <label>Title and Department</label> -->
+    </div>
+       <div class="field">
+           <input class="userType" type="text" name="user_type" required>
+           <label>Hr or Employee</label>
+       </div>
+    </div> 
+    <div>
+    <div class="field">
+    <input class="sal" type="number" name="sal" min ="0" max= "300000" required>
+    <label>Monthly Salary</label>
+    </div>
+    <div class="field">
+      <input class="bloodGroup" type="text" name="bloodGroup" required>
+      <label>Blood Group</label>
+    </div>
+
+        <div class="field">
+          <input class="email" type="email" name="email" required>
+          <label>Email Address</label>
+        </div>
+        <div class="field">
+          <input class="password" type="password" name="Password" required>
+          <label >Password</label>
+        </div>
+      <div class="field">
+          <input class="Confirm" type="password" name="Confirm-Password" required>
+          <label>Confirm Password</label>
+      </div>
+    <br>
+    <div style="color:white; display: grid; place-items: center;background:white;background:black;">
+      <h5>Password must contain atleast 1 uppercase,<br>&emsp;&emsp;&emsp;1 special Character and 1 digit</h5>
+    </div>
+    </div>
+    </div>
+    <div class="pass-link">
+
+    <br>
+    </div>
+    <div class="field">
+          <button class="btn sub" onclick="btnClicked()"><span>Sign up</span></button>
+    </div>
+    </div>
+  {% elif name == "Current_Users" %}
+    <form action="/specific_user" method="POST">
+    <div class = "input-icons">
+        <input class="input-field ord2" id = "searchBar" type="text" placeholder="Search Employee with First Name..." name="search">
+      <button class= "search" id= "searchButton" > <i class="fa fa-search icon"></i></button>
+    </div>
+    </form>  
+  <br>
+  <br>
+  {% for user in users %}
+  <div class= "container" >
+    <div class="wrapper" style = "color:white;">
+       <form action="{{ url_for('admin_delete') }}" method="POST">
+         <h4>First Name : {{user[0]}}</h4>
+         <h4>Last Name : {{user[1]}}</h4>
+         <h4>Phone : {{user[2]}}</h4>
+         <h4>Date Of Joining : {{user[3]}}</h4>
+         <h4>Years Of Experience : {{user[4]}}</h4>
+         <h4>Designation : {{user[5]}}</h4>
+         <h4>Salary : {{user[6]}}</h4>
+         <h4>Blood Group : {{user[7]}}</h4>
+         <h4>Email : {{user[8]}}</h4>
+         <input type="hidden" name="email" value="{{ user[8] }}">
+      <div style="display: grid;place-items: center;"><button class="admin_btn delete" ><i class="material-icons">delete</i></button></div>
+      </form>
+      <form action = "{{url_for('update')}}" method = "POST">
+      <input type="hidden" name="email" value="{{ user[8] }}">
+      <div class="update-btn" style="display: grid;place-items: center;margin-bottom:5%;"><button  class="admin_btn update">Update</button></div>
+        </form>
+    </div>
+    </div>
+  <br><br>
+  {% endfor %}
+
+
+    
+    {% elif name == "update" %} 
+    <br>
+    <br>
+    {% for user in users %}
+    <div class= "container" >
+      <div class="wrapper" style = "background:white;color:black;">
+         <form action="{{ url_for('save_changes') }}" method="POST" >
+           <div class="form-group1">
+             <label for="firstName">First Name :</label>
+             <input type="text" name="FirstName" id="firstName" value="{{user[0]}}">
+           </div>
+           <div class="form-group1">
+             <label for="lastName">Last Name :</label>
+             <input type="text" id="lastName" name="LastName" value="{{user[1]}}">
+           </div>
+           <div class="form-group1">
+             <label for="phone">Phone :</label>
+             <input type="text" name="PhoneNumber" id="phone" value="{{user[2]}}">
+           </div>
+           <div class="form-group1">
+             <label for="dateOfJoining">Date Of Joining :</label>
+             <input type="date" name="DateOfJoin" id="dateOfJoining" value="{{user[3]}}">
+           </div>
+           <div class="form-group1">
+             <label for="yearsOfExperience">Years Of Experience :</label>
+             <input type="number" id="yearsOfExperience" name="experience" value="{{user[4]}}">
+           </div>
+           <div class="form-group1">
+              <label>Designation :</label>
+               <select id="desig" name="designation">
+                   <option selected hidden>{{user[5]}}</option>
+                   <option value = "hr">HR</option>
+                   <option value="intern">Intern</option>
+                   <option value="juniorDeveloper">Junior Developer</option>
+                   <option value="seniorDeveloper">Senior Developer</option>
+                   <option value="teamLead">Team Lead</option>
+                   <option value="manager">Manager</option>
+                   <option value="director">Director</option>
+                   <option value="cto">CTO</option>
+                   <option value="ceo">CEO</option>
+               </select>
+               </div>
+           <div class="form-group1">
+             <label for="salary">Salary :</label>
+             <input type="number" name="sal" id="salary" value="{{user[6]}}">
+           </div>
+           <div class="form-group1">
+             <label for="bloodGroup">Blood Group :</label>
+             <input type="text" name="bloodGroup" id="bloodGroup" value="{{user[7]}}">
+           </div>
+           <div class="form-group1">
+             <label for="email"></label>
+             <input type="hidden" name="email" id="email" value="{{user[8]}}">
+           </div>
+           <div class="update-btn" style="display: grid;place-items: center;margin-bottom:5%;margin-top:5%;"><button class="admin_btn update" >Save Changes</button></div>
+         </form>
+      </div>
+      </div>
+    <br><br>
+     {% endfor %}
+  {% endif %}
+  <div id="name-container" data-name="{{ name }}"></div>
+
+  {% include "scripts.html" %}
+</body>
+</html>
